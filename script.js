@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const languageSelect = $("#languageSelect");
 
   // English is ALWAYS the default language.
-  // Language is intentionally not stored in localStorage.
+  // Language is not stored in localStorage.
   if (languageSelect) {
     languageSelect.value = "en";
   }
@@ -84,7 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const isOpen =
         navLinks.classList.toggle("open");
 
-      menuToggle.classList.toggle("active", isOpen);
+      menuToggle.classList.toggle(
+        "active",
+        isOpen
+      );
 
       menuToggle.setAttribute(
         "aria-expanded",
@@ -185,13 +188,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     revealElements.forEach(element => {
+
       revealObserver.observe(element);
+
     });
 
   } else {
 
     revealElements.forEach(element => {
+
       element.classList.add("visible");
+
     });
 
   }
@@ -213,7 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => {
 
       filterButtons.forEach(btn => {
+
         btn.classList.remove("active");
+
       });
 
       button.classList.add("active");
@@ -265,10 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =======================================================
      GALLERY MODAL
-     
-     IMPORTANT:
-     Gallery popup is IMAGE ONLY.
-     Captions are not displayed.
+     IMAGE ONLY
   ======================================================= */
 
   const galleryModal =
@@ -281,13 +287,10 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#modalCaption");
 
 
-  // Completely hide gallery caption text.
+  // Hide gallery caption permanently
   if (modalCaption) {
-
     modalCaption.textContent = "";
-
     modalCaption.style.display = "none";
-
   }
 
 
@@ -306,16 +309,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       modalImage.src = image;
 
-      // No caption is shown.
+      // No caption or text in gallery popup
       modalImage.alt = "";
 
 
       if (modalCaption) {
-
         modalCaption.textContent = "";
-
         modalCaption.style.display = "none";
-
       }
 
 
@@ -328,10 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =======================================================
      POP MODAL
-     
-     IMPORTANT:
-     POP popup is IMAGE ONLY.
-     No label or fallback text is displayed.
+     IMAGE ONLY
   ======================================================= */
 
   const popModal =
@@ -343,17 +340,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const popFallback =
     $("#popFallback");
 
-  const popModalLabel =
+  const popLabel =
     $(".pop-modal-label");
 
 
-  // Hide all text inside POP popup.
-  if (popFallback) {
-    popFallback.style.display = "none";
+  // Hide all POP popup text
+  if (popLabel) {
+    popLabel.style.display = "none";
   }
 
-  if (popModalLabel) {
-    popModalLabel.style.display = "none";
+  if (popFallback) {
+    popFallback.style.display = "none";
   }
 
 
@@ -379,7 +376,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         popImage.onerror = () => {
 
-          // Do not display any fallback text.
+          // Keep popup image-only.
+          // Do not show fallback text.
+
           popImage.style.display = "none";
 
           if (popFallback) {
@@ -432,16 +431,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* -------------------------------------------------------
-     Close modal by clicking outside
-  ------------------------------------------------------- */
+  /* Close modal by clicking outside */
 
   $$(".modal").forEach(modal => {
 
     modal.addEventListener("click", event => {
 
       if (event.target === modal) {
+
         closeModal(modal);
+
       }
 
     });
@@ -449,9 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* -------------------------------------------------------
-     Close modal with Escape
-  ------------------------------------------------------- */
+  /* Close modal with Escape */
 
   document.addEventListener("keydown", event => {
 
@@ -732,7 +729,9 @@ ${message}`;
 
 
     sections.forEach(section => {
+
       sectionObserver.observe(section);
+
     });
 
   }
@@ -744,7 +743,7 @@ ${message}`;
 
   document.addEventListener(
     "modalStateChange",
-    event => {
+    () => {
 
       const anyModalOpen =
         $$(".modal.open").length > 0;
@@ -1020,7 +1019,7 @@ const translations = {
       "better possibilities.",
 
     productsIntro:
-      "Explore our selected crop varieties. Product cards are ready for your POP images and detailed documents.",
+      "Explore our selected crop varieties.",
 
     allCrops:
       "All Crops",
@@ -1418,7 +1417,7 @@ const translations = {
       "चांगल्या उत्पादनासाठी.",
 
     productsIntro:
-      "आमच्या निवडक पिकांच्या बियाण्यांच्या जाती पहा. उत्पादन कार्डमध्ये तुमचे पीओपी चित्र आणि सविस्तर कागदपत्रे जोडता येतील.",
+      "आमच्या निवडक पिकांच्या बियाण्यांच्या जाती पहा.",
 
     allCrops:
       "सर्व पिके",
@@ -1806,13 +1805,9 @@ function applyLanguage(language) {
 
 
   /*
-     IMPORTANT:
-     Gallery captions are intentionally NOT processed here.
-     
-     This means:
-     - Missing captions are safe.
-     - Removed captions will not break the script.
-     - No caption is inserted into the popup.
+     Gallery captions are intentionally NOT
+     processed here because the gallery popup
+     should contain only the image.
   */
 
 
@@ -1820,7 +1815,7 @@ function applyLanguage(language) {
      SAVE CURRENT LANGUAGE IN MEMORY ONLY
 
      This is NOT localStorage.
-     Refreshing the page returns to English.
+     Refreshing the page will return to English.
   ------------------------------------------------------- */
 
   window.greenVidarbhaLanguage =
