@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const languageSelect = $("#languageSelect");
 
   // English is ALWAYS the default language.
-  // We intentionally do not use localStorage for language.
+  // Language is intentionally not stored in localStorage.
   if (languageSelect) {
     languageSelect.value = "en";
   }
@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (welcomeScreen) {
 
     setTimeout(() => {
+
       welcomeScreen.classList.add("hide");
 
       setTimeout(() => {
@@ -184,17 +185,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     revealElements.forEach(element => {
-
       revealObserver.observe(element);
-
     });
 
   } else {
 
     revealElements.forEach(element => {
-
       element.classList.add("visible");
-
     });
 
   }
@@ -216,9 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => {
 
       filterButtons.forEach(btn => {
-
         btn.classList.remove("active");
-
       });
 
       button.classList.add("active");
@@ -270,6 +265,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =======================================================
      GALLERY MODAL
+     
+     IMPORTANT:
+     Gallery popup is IMAGE ONLY.
+     Captions are not displayed.
   ======================================================= */
 
   const galleryModal =
@@ -280,6 +279,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const modalCaption =
     $("#modalCaption");
+
+
+  // Completely hide gallery caption text.
+  if (modalCaption) {
+
+    modalCaption.textContent = "";
+
+    modalCaption.style.display = "none";
+
+  }
 
 
   $$(".gallery-item").forEach(item => {
@@ -294,24 +303,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const image =
         item.dataset.image;
 
-      const caption =
-        item.dataset.caption || "";
-
 
       modalImage.src = image;
 
-      modalImage.alt =
-        getTranslatedGalleryCaption(
-          item.dataset.i18nCaption,
-          caption
-        );
+      // No caption is shown.
+      modalImage.alt = "";
+
 
       if (modalCaption) {
-        modalCaption.textContent =
-          getTranslatedGalleryCaption(
-            item.dataset.i18nCaption,
-            caption
-          );
+
+        modalCaption.textContent = "";
+
+        modalCaption.style.display = "none";
+
       }
 
 
@@ -324,6 +328,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =======================================================
      POP MODAL
+     
+     IMPORTANT:
+     POP popup is IMAGE ONLY.
+     No label or fallback text is displayed.
   ======================================================= */
 
   const popModal =
@@ -334,6 +342,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const popFallback =
     $("#popFallback");
+
+  const popModalLabel =
+    $(".pop-modal-label");
+
+
+  // Hide all text inside POP popup.
+  if (popFallback) {
+    popFallback.style.display = "none";
+  }
+
+  if (popModalLabel) {
+    popModalLabel.style.display = "none";
+  }
 
 
   $$(".pop-btn").forEach(button => {
@@ -355,15 +376,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         popImage.style.display = "block";
 
+
         popImage.onerror = () => {
 
+          // Do not display any fallback text.
           popImage.style.display = "none";
 
           if (popFallback) {
-            popFallback.style.display = "block";
+            popFallback.style.display = "none";
           }
 
         };
+
 
         popImage.onload = () => {
 
@@ -408,16 +432,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* Close modal by clicking outside */
+  /* -------------------------------------------------------
+     Close modal by clicking outside
+  ------------------------------------------------------- */
 
   $$(".modal").forEach(modal => {
 
     modal.addEventListener("click", event => {
 
       if (event.target === modal) {
-
         closeModal(modal);
-
       }
 
     });
@@ -425,7 +449,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* Close modal with Escape */
+  /* -------------------------------------------------------
+     Close modal with Escape
+  ------------------------------------------------------- */
 
   document.addEventListener("keydown", event => {
 
@@ -436,7 +462,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
           modal.classList.contains("open")
         ) {
+
           closeModal(modal);
+
         }
 
       });
@@ -704,9 +732,7 @@ ${message}`;
 
 
     sections.forEach(section => {
-
       sectionObserver.observe(section);
-
     });
 
   }
@@ -1721,10 +1747,10 @@ function applyLanguage(language) {
 
   /* -------------------------------------------------------
      ATTRIBUTES
-     
+
      Example:
      data-i18n-attr="placeholder:yourName"
-     
+
      Multiple:
      data-i18n-attr="title:toggleTheme,aria-label:toggleDarkMode"
   ------------------------------------------------------- */
@@ -1779,92 +1805,22 @@ function applyLanguage(language) {
   });
 
 
-  /* -------------------------------------------------------
-     GALLERY DATA CAPTIONS
-  ------------------------------------------------------- */
-
-  $$("[data-i18n-caption]").forEach(element => {
-
-    const key =
-      element.dataset.i18nCaption;
-
-
-    if (
-      Object.prototype.hasOwnProperty.call(
-        dictionary,
-        key
-      )
-    ) {
-
-      element.dataset.caption =
-        dictionary[key];
-
-    }
-
-  });
-
-
-  /* -------------------------------------------------------
-     UPDATE GALLERY MODAL IF IT IS OPEN
-  ------------------------------------------------------- */
-
-  const galleryModal =
-    document.querySelector("#galleryModal");
-
-
-  if (
-    galleryModal &&
-    galleryModal.classList.contains("open")
-  ) {
-
-    const currentCaption =
-      document.querySelector("#modalCaption");
-
-
-    if (currentCaption) {
-
-      const galleryItems =
-        $$(".gallery-item");
-
-
-      const matchingItem =
-        galleryItems.find(item =>
-          item.dataset.image ===
-          document.querySelector("#modalImage")?.src
-        );
-
-
-      if (matchingItem) {
-
-        const key =
-          matchingItem.dataset.i18nCaption;
-
-
-        if (
-          key &&
-          Object.prototype.hasOwnProperty.call(
-            dictionary,
-            key
-          )
-        ) {
-
-          currentCaption.textContent =
-            dictionary[key];
-
-        }
-
-      }
-
-    }
-
-  }
+  /*
+     IMPORTANT:
+     Gallery captions are intentionally NOT processed here.
+     
+     This means:
+     - Missing captions are safe.
+     - Removed captions will not break the script.
+     - No caption is inserted into the popup.
+  */
 
 
   /* -------------------------------------------------------
      SAVE CURRENT LANGUAGE IN MEMORY ONLY
-     
+
      This is NOT localStorage.
-     Refreshing the page will return to English.
+     Refreshing the page returns to English.
   ------------------------------------------------------- */
 
   window.greenVidarbhaLanguage =
@@ -1883,42 +1839,6 @@ function getCurrentLanguage() {
     window.greenVidarbhaLanguage ||
     "en"
   );
-
-}
-
-
-/* =========================================================
-   GALLERY CAPTION HELPER
-========================================================= */
-
-function getTranslatedGalleryCaption(
-  key,
-  fallback
-) {
-
-  const language =
-    getCurrentLanguage();
-
-
-  const dictionary =
-    translations[language] ||
-    translations.en;
-
-
-  if (
-    key &&
-    Object.prototype.hasOwnProperty.call(
-      dictionary,
-      key
-    )
-  ) {
-
-    return dictionary[key];
-
-  }
-
-
-  return fallback || "";
 
 }
 
