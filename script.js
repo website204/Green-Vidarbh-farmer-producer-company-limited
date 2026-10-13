@@ -1248,6 +1248,16 @@ const translations = {
 
     call:
       "Call"
+     ```js
+documentsKicker: "COMPANY CREDENTIALS",
+documentsTitleMain: "Licenses &",
+documentsTitleHighlight: "Registrations.",
+credentialsIntro: "Official license and registration details of our company.",
+licenseMarketing: "License for Direct Marketing of Agricultural Produce",
+licenseFss: "License under FSS Act, 2006",
+licenseSeeds: "License to Carry on Business of a Dealer in Seeds",
+certificateIncorporation: "Certificate of Incorporation",
+```
 
   },
 
@@ -1646,6 +1656,16 @@ const translations = {
 
     call:
       "कॉल करा"
+     ```js
+documentsKicker: "कंपनीची अधिकृत कागदपत्रे",
+documentsTitleMain: "परवाने व",
+documentsTitleHighlight: "नोंदणी क्रमांक.",
+credentialsIntro: "आमच्या कंपनीचे अधिकृत परवाने आणि नोंदणी क्रमांक.",
+licenseMarketing: "कृषी उत्पादनांच्या थेट विपणनासाठी परवाना",
+licenseFss: "अन्न सुरक्षा व मानके अधिनियम, २००६ अंतर्गत परवाना",
+licenseSeeds: "बियाणे विक्रेता म्हणून व्यवसाय करण्याचा परवाना",
+certificateIncorporation: "कंपनी नोंदणी प्रमाणपत्र",
+```
 
   }
 
